@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "demio_ruby"
+require "demio"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

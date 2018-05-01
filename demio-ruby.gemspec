@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "demio_ruby/version"
+require "demio/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "demio_ruby"
-  spec.version       = DemioRuby::VERSION
+  spec.name          = "demio-ruby"
+  spec.version       = Demio::VERSION
   spec.authors       = ["Robyn-Dale Samuda"]
   spec.email         = ["robyn@yuraki.com"]
 

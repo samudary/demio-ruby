@@ -1,6 +1,6 @@
-RSpec.describe DemioRuby do
+RSpec.describe Demio do
   it "has a version number" do
-    expect(DemioRuby::VERSION).not_to be nil
+    expect(Demio::VERSION).not_to be nil
   end
 
   it "does something useful" do
