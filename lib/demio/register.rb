@@ -1,7 +1,8 @@
 module Demio
   class Client
     module Register
-      def register
+      def register(payload = {})
+        put "event/register", payload
       end
     end
   end
