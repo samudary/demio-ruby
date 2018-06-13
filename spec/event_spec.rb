@@ -7,10 +7,10 @@ RSpec.describe Demio::Client::Event do
     @client = Demio::Client.new(options)
   end
 
-  it "makes a GET request to Demio" do
+  it "makes a GET request to Demio's event endpoint" do
     event_id = 4567
     event = {
-      "id": 1,
+      "id": event_id,
       "date_id": 35,
       "name": "John Doe",
       "email": "john.doe@gmail.com"

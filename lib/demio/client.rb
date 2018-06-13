@@ -1,8 +1,8 @@
-require "demio/event"
-require "demio/events"
-require "demio/event_date"
-require "demio/register"
 require "demio/errors"
+require "demio/event"
+require "demio/event_date"
+require "demio/events"
+require "demio/register"
 require "json"
 require "net/http"
 require "uri"
@@ -10,8 +10,8 @@ require "uri"
 module Demio
   class Client
     include Event
-    include Events
     include EventDate
+    include Events
     include Register
 
     attr_reader :api_key, :api_secret
@@ -66,7 +66,7 @@ module Demio
       request["Api-Key"] = api_key
       request["Api-Secret"] = api_secret
       request["Content-Type"] = "application/json"
-      request["User-Agent"] = "Demio Ruby Client - #{Demio::VERSION}"
+      request["User-Agent"] = "Demio Ruby Client - #{Demio::Version}"
       request
     end
 
