@@ -66,7 +66,7 @@ module Demio
       request["Api-Key"] = api_key
       request["Api-Secret"] = api_secret
       request["Content-Type"] = "application/json"
-      request["User-Agent"] = "Demio Ruby Client - #{Demio::Version}"
+      request["User-Agent"] = "Demio Ruby Client - #{Demio::VERSION}"
       request
     end
 
