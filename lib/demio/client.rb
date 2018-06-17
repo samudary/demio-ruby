@@ -30,7 +30,10 @@ module Demio
     end
 
     def ping
-      make_request(Net::HTTP::Get, "ping")
+      make_request(
+        Net::HTTP::Get,
+        "ping/query?api_key=#{api_key}&api_secret=#{api_secret}"
+      )
     end
 
     private
