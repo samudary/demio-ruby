@@ -1,0 +1,23 @@
+AllCops:
+  Exclude:
+    - "demio-ruby.gemspec"
+    - "Gemfile"
+    - "Rakefile"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*.rb"
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/MethodLength: 
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 17
+
+Metrics/LineLength:
+  Max: 100
+
+Documentation:
+  Enabled: false

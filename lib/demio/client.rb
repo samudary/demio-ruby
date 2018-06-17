@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "demio/errors"
 require "demio/event"
 require "demio/event_date"
@@ -39,17 +41,15 @@ module Demio
     private
 
     def make_request(verb_klass, uri, payload = {}, limit = 10)
-      raise TooManyRedirectsError, "too many HTTP redirects" if limit == 0
+      raise TooManyRedirectsError, "too many HTTP redirects" if limit.zero?
 
       uri = format_uri(uri)
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         request = verb_klass.new uri
-        request = set_headers(request)
+        request = create_headers(request)
 
-        if verb_klass == Net::HTTP::Put
-          request.body = payload.to_json
-        end
+        request.body = payload.to_json if verb_klass == Net::HTTP::Put
 
         response = http.request request
 
@@ -65,7 +65,7 @@ module Demio
       end
     end
 
-    def set_headers(request)
+    def create_headers(request)
       request["Api-Key"] = api_key
       request["Api-Secret"] = api_secret
       request["Content-Type"] = "application/json"
