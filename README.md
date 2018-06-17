@@ -1,15 +1,15 @@
-# DemioRuby
+# Demio Ruby Client
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/demio_ruby`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Build Status](https://travis-ci.org/samudary/demio-ruby.svg?branch=master)](https://travis-ci.org/samudary/demio-ruby)
 
-TODO: Delete this and the text above, and describe your gem
+A Ruby gem for interacting with the [Demio API](https://publicdemioapi.docs.apiary.io/).
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'demio_ruby'
+gem 'demio-ruby'
 ```
 
 And then execute:
@@ -18,21 +18,66 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install demio_ruby
+    $ gem install demio-ruby
 
 ## Usage
 
-TODO: Write usage instructions here
+Retrieve your API key and API secret from [here](https://my.demio.com/manage/api-details) and initialize the client:
+
+```ruby
+client = Demio::Client.new(
+  api_secret: "YOUR API SECRET",
+  api_key: "YOUR API KEY"
+)
+```
+
+### Methods
+
+| Actions                    | Methods                                              |
+| :------------------------- | :--------------------------------------------------- |
+| List events                | `#events`                                            |
+| Fetch an event             | `#event(event_id)`                                   |
+| Fetch event date info      | `#event_date(event_id, date_id)`                     |
+| Register a registrant      | `#register(payload = {})`                            |
+| Ping                       | `#ping`                                              |
+
+
+**Examples**
+
+```ruby
+client = Demio::Client.new(
+  api_secret: "YOUR API SECRET",
+  api_key: "YOUR API KEY"
+)
+
+payload = {
+  "id": 56458,
+  "name": "Jane Doe",
+  "email": "jane.doe@gmail.com"
+}
+
+response = client.register(payload)
+response.code
+# => "200"
+
+JSON.parse(response.body)
+# => {"hash"=>"ADv07WFv0RNDQZoF", "join_link"=>"https://event.demio.com/simulated-webinar/ADv07WFv0RNDQZoF"}
+
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake` to run the tests and rubocop. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/demio_ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at [here](https://github.com/samudary/demio-ruby/issues). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+1. Fork it ( https://github.com/samudary/demio-ruby/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
 
 ## License
 
@@ -40,4 +85,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the DemioRuby project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/demio_ruby/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the project’s codebases and ther environments is expected to follow the [code of conduct](https://github.com/samudary/demio-ruby/blob/master/CODE_OF_CONDUCT.md).
