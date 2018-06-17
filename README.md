@@ -1,6 +1,6 @@
 # Demio Ruby Client
 
-[![Build Status](https://semaphoreci.com/api/v1/samudary/demio-ruby/branches/master/badge.svg)](https://semaphoreci.com/samudary/demio-ruby)
+[![Build Status](https://travis-ci.org/samudary/demio-ruby.svg?branch=master)](https://travis-ci.org/samudary/demio-ruby)
 
 A Ruby gem for interacting with the Demio API.
 
