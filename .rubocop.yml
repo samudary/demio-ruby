@@ -1,0 +1,46 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - "demio-ruby.gemspec"
+    - "Gemfile"
+    - "Rakefile"
+    - 'vendor/**/*' # Fixes weird Travis CI incorrect cop issue
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*.rb"
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/MethodLength: 
+  Max: 20
+
+Metrics/AbcSize:
+  Max: 17
+
+Metrics/LineLength:
+  Max: 100
+
+Documentation:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Description: 'Checks for trailing comma in array literals.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas'
+  EnforcedStyleForMultiline: no_comma
+  SupportedStylesForMultiline:
+    - comma
+    - consistent_comma
+    - no_comma
+  Enabled: true
+
+Style/TrailingCommaInHashLiteral:
+  Description: 'Checks for trailing comma in hash literals.'
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas'
+  EnforcedStyleForMultiline: no_comma
+  SupportedStylesForMultiline:
+    - comma
+    - consistent_comma
+    - no_comma
+  Enabled: true

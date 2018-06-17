@@ -10,18 +10,18 @@ RSpec.describe Demio::Client::Event do
   it "makes a GET request to Demio's event fetch endpoint" do
     event_id = 4567
     event = {
-      "id": event_id,
-      "date_id": 35,
-      "name": "John Doe",
-      "email": "john.doe@gmail.com"
+      "id" => event_id,
+      "date_id" => 35,
+      "name" => "John Doe",
+      "email" => "john.doe@gmail.com"
     }
 
-    stub_request(:get, "https://my.demio.com/api/v1/event/#{event_id}").
-      to_return(body: event.to_json, status: 200)
+    stub_request(:get, "https://my.demio.com/api/v1/event/#{event_id}")
+      .to_return(body: event.to_json, status: 200)
 
     response = @client.event(event_id)
     expect(response.code).to eq("200")
-    expect(a_request(:get, "https://my.demio.com/api/v1/event/#{event_id}")).
-      to have_been_made.times(1)
+    expect(a_request(:get, "https://my.demio.com/api/v1/event/#{event_id}"))
+      .to have_been_made.times(1)
   end
 end
