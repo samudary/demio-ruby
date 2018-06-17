@@ -9,7 +9,7 @@ A Ruby gem for interacting with the [Demio API](https://publicdemioapi.docs.apia
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'demio-ruby'
+gem "demio-ruby", require: "demio"
 ```
 
 And then execute:

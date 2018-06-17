@@ -5,7 +5,7 @@ AllCops:
     - "demio-ruby.gemspec"
     - "Gemfile"
     - "Rakefile"
-    - 'vendor/**/*' # Fixes weird Travis CI incorrect cop issue
+    - "vendor/**/*" # Fixes weird Travis CI incorrect cop issue
 
 Metrics/BlockLength:
   Exclude:
