@@ -8,9 +8,8 @@ RSpec.describe Demio::Client::Participants do
     }
   end
   let(:client) { Demio::Client.new(options) }
-
-  it "makes a GET request to Demio's participants endpoint" do
-    stubbed_response_body = {
+  let(:stubbed_response_body) do
+    {
       "participants" => [
         {
           "email" => "simulation+dave@demio.com",
@@ -28,7 +27,10 @@ RSpec.describe Demio::Client::Participants do
         }
       ]
     }.to_json
-    event_date_id = 1234
+  end
+  let(:event_date_id) { 1234 }
+
+  it "makes a GET request to Demio's participants endpoint" do
     stub_request(:get, "https://my.demio.com/api/v1/report/#{event_date_id}/participants")
       .to_return(body: stubbed_response_body, status: 200)
 
@@ -37,5 +39,18 @@ RSpec.describe Demio::Client::Participants do
     expect(response.body).to eq(stubbed_response_body)
     expect(a_request(:get, "https://my.demio.com/api/v1/report/#{event_date_id}/participants"))
       .to have_been_made.times(1)
+  end
+
+  context "with additional param" do
+    it "makes a GET request to Demio's participants endpoint with param" do
+      stub_request(:get, "https://my.demio.com/api/v1/report/#{event_date_id}/participants?status=left-early")
+        .to_return(body: stubbed_response_body, status: 200)
+
+      response = client.participants(event_date_id, "left-early")
+      expect(response.code).to eq("200")
+      expect(response.body).to eq(stubbed_response_body)
+      expect(a_request(:get, "https://my.demio.com/api/v1/report/#{event_date_id}/participants?status=left-early"))
+        .to have_been_made.times(1)
+    end
   end
 end
