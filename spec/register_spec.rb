@@ -22,10 +22,10 @@ RSpec.describe Demio::Client::Register do
 
     stub_request(:put, "https://my.demio.com/api/v1/event/register")
       .with(body: payload.to_json)
-      .to_return(body: stubbed_registration_response_body, status: 200)
+      .to_return(body: stubbed_registration_response_body, status: 201)
 
     response = client.register(payload)
-    expect(response.code).to eq("200")
+    expect(response.code).to eq("201")
     expect(response.body).to eq(stubbed_registration_response_body)
     expect(a_request(:put, "https://my.demio.com/api/v1/event/register")
       .with(body: payload.to_json))
