@@ -4,6 +4,7 @@ require "demio/errors"
 require "demio/event"
 require "demio/event_date"
 require "demio/events"
+require "demio/participants"
 require "demio/register"
 require "json"
 require "net/http"
@@ -14,9 +15,12 @@ module Demio
     include Event
     include EventDate
     include Events
+    include Participants
     include Register
 
     attr_reader :api_key, :api_secret
+
+    REQUEST_REDIRECT_FOLLOW_LIMIT = 10
 
     def initialize(options = {})
       @api_key = options[:api_key]
@@ -40,28 +44,33 @@ module Demio
 
     private
 
-    def make_request(verb_klass, uri, payload = {}, limit = 10)
-      raise TooManyRedirectsError, "too many HTTP redirects" if limit.zero?
+    def make_request(verb_klass, uri, payload = {}, request_limit = REQUEST_REDIRECT_FOLLOW_LIMIT)
+      raise TooManyRedirectsError, "too many HTTP redirects" if request_limit.zero?
 
-      uri = format_uri(uri)
+      uri = redirected_request?(request_limit) ? URI(uri) : format_uri(uri)
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-        request = verb_klass.new uri
-        request = create_headers(request)
+        response = http.request(create_request(verb_klass, uri, payload))
+        handle_response(response, verb_klass, payload, request_limit)
+      end
+    end
 
-        request.body = payload.to_json if verb_klass == Net::HTTP::Put
+    def create_request(verb_klass, uri, payload)
+      request = verb_klass.new(uri)
+      request = create_headers(request)
+      request.body = payload.to_json if verb_klass == Net::HTTP::Put
+      request
+    end
 
-        response = http.request request
-
-        case response
-        when Net::HTTPSuccess then
-          response
-        when Net::HTTPRedirection then
-          location = response["location"]
-          make_request(verb_klass, location, payload, limit - 1)
-        else
-          response.value
-        end
+    def handle_response(response, verb_klass, payload, request_limit)
+      case response
+      when Net::HTTPSuccess
+        response
+      when Net::HTTPRedirection
+        location = response["Location"]
+        make_request(verb_klass, location, payload, request_limit - 1)
+      else
+        response.value
       end
     end
 
@@ -71,6 +80,10 @@ module Demio
       request["Content-Type"] = "application/json"
       request["User-Agent"] = "Demio Ruby Client - #{Demio::VERSION}"
       request
+    end
+
+    def redirected_request?(request_limit)
+      request_limit < REQUEST_REDIRECT_FOLLOW_LIMIT
     end
 
     def format_uri(path)

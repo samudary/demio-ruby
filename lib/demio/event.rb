@@ -6,9 +6,11 @@ module Demio
       # Fetches a single event from Demio
       #
       # @param id [String]
-      # @return [Net::HTTPCreated]
-      def event(id)
-        get "event/#{id}"
+      # @param active [Boolean]
+      # @return [Net::HTTPOk]
+      def event(id, active = nil)
+        active_param = active ? "?active=#{active}" : nil
+        get "event/#{id}#{active_param}"
       end
     end
   end

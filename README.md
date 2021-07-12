@@ -1,6 +1,7 @@
 # Demio Ruby Client
 
-[![Build Status](https://travis-ci.org/samudary/demio-ruby.svg?branch=master)](https://travis-ci.org/samudary/demio-ruby)
+![example workflow](https://github.com/samudary/demio-ruby/actions/workflows/ruby.yml/badge.svg)
+
 
 A Ruby gem for interacting with the [Demio API](https://publicdemioapi.docs.apiary.io/).
 
@@ -37,7 +38,8 @@ client = Demio::Client.new(
 | :------------------------- | :--------------------------------------------------- |
 | List events                | `#events`                                            |
 | Fetch an event             | `#event(event_id)`                                   |
-| Fetch event date info      | `#event_date(event_id, date_id)`                     |
+| Fetch event date info      | `#event_date(event_id, event_date_id)`               |
+| Fetch participants list    | `#participants(event_date_id)`                       |
 | Register a registrant      | `#register(payload = {})`                            |
 | Ping                       | `#ping`                                              |
 
