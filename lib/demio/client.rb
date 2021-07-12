@@ -18,6 +18,8 @@ module Demio
 
     attr_reader :api_key, :api_secret
 
+    REQUEST_REDIRECT_FOLLOW_LIMIT = 10
+
     def initialize(options = {})
       @api_key = options[:api_key]
       @api_secret = options[:api_secret]
@@ -40,14 +42,14 @@ module Demio
 
     private
 
-    def make_request(verb_klass, uri, payload = {}, request_limit = 10)
+    def make_request(verb_klass, uri, payload = {}, request_limit = REQUEST_REDIRECT_FOLLOW_LIMIT)
       raise TooManyRedirectsError, "too many HTTP redirects" if request_limit.zero?
 
-      uri = format_uri(uri)
+      uri = redirected_request?(request_limit) ? URI(uri) : format_uri(uri)
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         response = http.request(create_request(verb_klass, uri, payload))
-        handle_response(response, request_limit)
+        handle_response(response, verb_klass, payload, request_limit)
       end
     end
 
@@ -58,12 +60,12 @@ module Demio
       request
     end
 
-    def handle_response(response, request_limit)
+    def handle_response(response, verb_klass, payload, request_limit)
       case response
       when Net::HTTPSuccess
         response
       when Net::HTTPRedirection
-        location = response["location"]
+        location = response["Location"]
         make_request(verb_klass, location, payload, request_limit - 1)
       else
         response.value
@@ -76,6 +78,10 @@ module Demio
       request["Content-Type"] = "application/json"
       request["User-Agent"] = "Demio Ruby Client - #{Demio::VERSION}"
       request
+    end
+
+    def redirected_request?(request_limit)
+      request_limit < REQUEST_REDIRECT_FOLLOW_LIMIT
     end
 
     def format_uri(path)
