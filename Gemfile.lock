@@ -26,7 +26,7 @@ GEM
       slop (~> 3.4)
     public_suffix (3.0.2)
     rainbow (3.0.0)
-    rake (10.5.0)
+    rake (12.3.3)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -64,7 +64,7 @@ DEPENDENCIES
   bundler (~> 1.16)
   demio-ruby!
   pry (~> 0.10.3)
-  rake (~> 10.0)
+  rake (~> 12.3)
   rspec (~> 3.0)
   rubocop (~> 0.57.1)
   webmock (~> 3.4)
