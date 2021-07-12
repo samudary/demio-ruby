@@ -4,6 +4,7 @@ require "demio/errors"
 require "demio/event"
 require "demio/event_date"
 require "demio/events"
+require "demio/participants"
 require "demio/register"
 require "json"
 require "net/http"
@@ -14,6 +15,7 @@ module Demio
     include Event
     include EventDate
     include Events
+    include Participants
     include Register
 
     attr_reader :api_key, :api_secret
