@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe Demio::Client::Events do
-  before(:each) do
-    options = {
+  let(:options) do
+    {
       api_secret: "12345",
       api_key: "xyz0987"
     }
-    @client = Demio::Client.new(options)
   end
+  let(:client) { Demio::Client.new(options) }
 
   it "makes a GET request to Demio's event listing endpoint" do
-    response = [
+    stubbed_response_body = [
       {
         "id" => 62,
         "name" => "First Webinar",
@@ -29,12 +29,13 @@ RSpec.describe Demio::Client::Events do
         "zone" => "America/New_York",
         "registration_url" => "http://my.demio.loc/ref/pgRzWQhYLPmuboOA"
       }
-    ]
+    ].to_json
     stub_request(:get, "https://my.demio.com/api/v1/events")
-      .to_return(body: response.to_json, status: 200)
+      .to_return(body: stubbed_response_body, status: 200)
 
-    response = @client.events
+    response = client.events
     expect(response.code).to eq("200")
+    expect(response.body).to eq(stubbed_response_body)
     expect(a_request(:get, "https://my.demio.com/api/v1/events"))
       .to have_been_made.times(1)
   end
