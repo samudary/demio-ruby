@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe Demio::Client do
-  before(:each) do
-    options = {
+  let(:options) do
+    {
       api_secret: "12345",
       api_key: "xyz0987"
     }
-    @client = Demio::Client.new(options)
   end
+  let(:client) { described_class.new(options) }
 
   context "request headers" do
     it "correctly sets headers" do
@@ -16,37 +16,34 @@ RSpec.describe Demio::Client do
         "https://my.demio.com/api/v1/ping/query?api_key=xyz0987&api_secret=12345"
       )
 
-      @client.ping
+      client.ping
       expect(
         a_request(
           :get,
           "https://my.demio.com/api/v1/ping/query?api_key=xyz0987&api_secret=12345"
-        )
-        .with(headers: {
-                "Api-Key" => "xyz0987",
-                "Api-Secret" => "12345",
-                "Content-Type" => "application/json",
-                "User-Agent" => "Demio Ruby Client - #{Demio::VERSION}"
-              })
+        ).with(
+          headers: {
+            "Api-Key" => "xyz0987",
+            "Api-Secret" => "12345",
+            "Content-Type" => "application/json",
+            "User-Agent" => "Demio Ruby Client - #{Demio::VERSION}"
+          })
       ).to have_been_made.times(1)
     end
   end
 
   context "#ping" do
     it "makes a GET ping request" do
-      ping_response = {
-        "pong" => true
-      }
+      ping_response = { "pong" => true }
 
-      stub_request(:get, "https://my.demio.com/api/v1/ping/query?api_key=xyz0987&api_secret=12345")
-        .to_return(body: ping_response.to_json, status: 200)
+      stub_request(:get, "https://my.demio.com/api/v1/ping/query?api_key=xyz0987&api_secret=12345").
+        to_return(body: ping_response.to_json, status: 200)
 
-      response = @client.ping
+      response = client.ping
       expect(response.code).to eq("200")
       expect(
         a_request(
-          :get,
-          "https://my.demio.com/api/v1/ping/query?api_key=xyz0987&api_secret=12345"
+          :get, "https://my.demio.com/api/v1/ping/query?api_key=xyz0987&api_secret=12345"
         )
       ).to have_been_made.times(1)
     end

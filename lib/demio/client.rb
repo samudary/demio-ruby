@@ -40,28 +40,33 @@ module Demio
 
     private
 
-    def make_request(verb_klass, uri, payload = {}, limit = 10)
-      raise TooManyRedirectsError, "too many HTTP redirects" if limit.zero?
+    def make_request(verb_klass, uri, payload = {}, request_limit = 10)
+      raise TooManyRedirectsError, "too many HTTP redirects" if request_limit.zero?
 
       uri = format_uri(uri)
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-        request = verb_klass.new uri
-        request = create_headers(request)
+        response = http.request(create_request(verb_klass, uri, payload))
+        handle_response(response, request_limit)
+      end
+    end
 
-        request.body = payload.to_json if verb_klass == Net::HTTP::Put
+    def create_request(verb_klass, uri, payload)
+      request = verb_klass.new(uri)
+      request = create_headers(request)
+      request.body = payload.to_json if verb_klass == Net::HTTP::Put
+      request
+    end
 
-        response = http.request request
-
-        case response
-        when Net::HTTPSuccess
-          response
-        when Net::HTTPRedirection
-          location = response["location"]
-          make_request(verb_klass, location, payload, limit - 1)
-        else
-          response.value
-        end
+    def handle_response(response, request_limit)
+      case response
+      when Net::HTTPSuccess
+        response
+      when Net::HTTPRedirection
+        location = response["location"]
+        make_request(verb_klass, location, payload, request_limit - 1)
+      else
+        response.value
       end
     end
 
