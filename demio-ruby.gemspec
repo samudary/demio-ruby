@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["robyn@yuraki.com"]
 
   spec.summary       = "A wrapper for interacting with the Demio API"
-  spec.description   = "A wrapper for interacting with the Demio API"
+  spec.description   = "Supports all methods for interacting with the Demio API as described at https://publicdemioapi.docs.apiary.io/"
   spec.homepage      = "https://github.com/samudary/demio-ruby"
   spec.license       = "MIT"
 
