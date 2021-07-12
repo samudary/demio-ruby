@@ -5,7 +5,7 @@ module Demio
     module Events
       # Fetches all events from Demio
       #
-      # @return [Net::HTTPCreated]
+      # @return [Net::HTTPOk]
       def events
         get "events"
       end

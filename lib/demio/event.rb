@@ -6,7 +6,7 @@ module Demio
       # Fetches a single event from Demio
       #
       # @param id [String]
-      # @return [Net::HTTPCreated]
+      # @return [Net::HTTPOk]
       def event(id)
         get "event/#{id}"
       end

@@ -7,7 +7,7 @@ module Demio
       #
       # @param event_id [String]
       # @param event_date_id [String]
-      # @return [Net::HTTPCreated]
+      # @return [Net::HTTPOk]
       def event_date(event_id, event_date_id)
         get "event/#{event_id}/date/#{event_date_id}"
       end

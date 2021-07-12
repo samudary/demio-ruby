@@ -97,6 +97,10 @@ RSpec.describe Demio::Client do
 
       response = client.get(target_path)
       expect(response.code).to eq("200")
+      expect(a_request(:get, "https://my.demio.com/api/v1/#{target_path}"))
+        .to have_been_made.times(1)
+      expect(a_request(:get, follow_url))
+        .to have_been_made.times(1)
     end
 
     it "raises an error if number of redirects exceed the limit" do

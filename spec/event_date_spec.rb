@@ -20,13 +20,13 @@ RSpec.describe Demio::Client::EventDate do
       "zone" => "Europe/Kiev"
     }.to_json
 
-    stub_request(:get, "https://my.demio.com/api/v1/event/#{event_id}/#{date_id}")
+    stub_request(:get, "https://my.demio.com/api/v1/event/#{event_id}/date/#{date_id}")
       .to_return(body: stubbed_event_response_body, status: 200)
 
     response = client.event_date(event_id, date_id)
     expect(response.code).to eq("200")
     expect(response.body).to eq(stubbed_event_response_body)
-    expect(a_request(:get, "https://my.demio.com/api/v1/event/#{event_id}/#{date_id}"))
+    expect(a_request(:get, "https://my.demio.com/api/v1/event/#{event_id}/date/#{date_id}"))
       .to have_been_made.times(1)
   end
 end
