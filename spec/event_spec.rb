@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Demio::Client::Event do
   before(:each) do
     options = {

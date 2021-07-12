@@ -54,9 +54,9 @@ module Demio
         response = http.request request
 
         case response
-        when Net::HTTPSuccess then
+        when Net::HTTPSuccess
           response
-        when Net::HTTPRedirection then
+        when Net::HTTPRedirection
           location = response["location"]
           make_request(verb_klass, location, payload, limit - 1)
         else
